@@ -11,8 +11,11 @@ pygame.display.set_caption('Space Invaders')
 enemyImg = pygame.image.load("assets/alien.png")
 enemyX = random.randint(0,800)
 enemyY = random.randint(50,150)
-enemyX_change=0.3
+enemyX_change=4
+enemyY_change=40
 
+
+background = pygame.image.load("assets/background.jpg")
 playerImg = pygame.image.load("assets/player64.png")
 playerX = 370
 playerY = 480
@@ -27,7 +30,7 @@ def enemy(x,y):
 ##Loop game
 running = True
 while running:
-    screen.fill((10,200,30))
+    screen.blit(background, (0,0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -35,9 +38,9 @@ while running:
 ## KEYS MOVE ACTION
         if(event.type == pygame.KEYDOWN):
             if(event.key == pygame.K_LEFT):
-                playerX_change = -0.2
+                playerX_change = -3
             if(event.key == pygame.K_RIGHT):
-                playerX_change = 0.2
+                playerX_change = 3
         if(event.type == pygame.KEYUP):
             if(event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT ):
                 playerX_change = 0
@@ -55,9 +58,11 @@ while running:
 
     enemyX += enemyX_change
     if(enemyX <= 0):
-        enemyX_change= 0.3
+        enemyX_change= 4
+        enemyY += enemyY_change
     elif(enemyX >= 736):
-        enemyX_change = -0.3
+        enemyX_change = -4
+        enemyY += enemyY_change
 
 
     player(playerX,playerY)
