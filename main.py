@@ -12,7 +12,7 @@ pygame.display.set_caption('Space Invaders')
 enemyImg = pygame.image.load("assets/alien.png")
 enemyX = random.randint(0,800)
 enemyY = random.randint(50,150)
-enemyX_change=4
+enemyX_change=2
 enemyY_change=40
 
 
@@ -58,7 +58,9 @@ while running:
             if(event.key == pygame.K_RIGHT):
                 playerX_change = 3
             if(event.key == pygame.K_SPACE):
-                bullet(playerX, bulletY)
+                if bullet_state is "ready":
+                    bulletX = playerX
+                    bullet(bulletX, bulletY)
         if(event.type == pygame.KEYUP):
             if(event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT ):
                 playerX_change = 0
@@ -76,15 +78,18 @@ while running:
 
     enemyX += enemyX_change
     if(enemyX <= 0):
-        enemyX_change= 4
+        enemyX_change= 2
         enemyY += enemyY_change
     elif(enemyX >= 736):
-        enemyX_change = -4
+        enemyX_change = -2
         enemyY += enemyY_change
 
 
+    if(bulletY <= 0):
+        bullet_state="ready"
+        bulletY = 480
     if bullet_state is "fire":
-        bullet(playerX, bulletY)
+        bullet(bulletX, bulletY)
         bulletY -= bulletY_change
 
     player(playerX,playerY)
