@@ -2,6 +2,8 @@ import pygame
 import random
 import math
 
+from pygame import mixer
+
 ##START PYGAME
 pygame.init()
 
@@ -9,6 +11,9 @@ pygame.init()
 screen = pygame.display.set_mode((800,600))
 background = pygame.image.load("assets/background.jpg")
 pygame.display.set_caption('Space Invaders')
+
+mixer.music.load("assets/sounds/a.mp3")
+mixer.music.play(-1)
 
 
 enemyImg = []
@@ -45,7 +50,16 @@ bulletY = 480
 bulletY_change=10
 bullet_state = "ready"
 
+font = pygame.font.Font("freesansbold.ttf",32)
+textY = 10
+textX = 10
+
+
 ##Function of each 'object'
+def show_points(x,y):
+    points = font.render("Score :" + str(score), True, (255,127,10))
+    screen.blit(points, (x,y))
+
 def player(x,y):
     screen.blit(playerImg, (x,y))
 def enemy(x,y,i):
@@ -98,7 +112,6 @@ while running:
         playerX = 736
 
     for i in range(number_of_enemys):
-        
         enemyX[i] += enemyX_change[i]
         if(enemyX[i] <= 0):
             enemyX_change[i]= 2
@@ -112,7 +125,6 @@ while running:
             bulletY = 480
             bullet_state = "ready"
             score += 1
-            print(score)
             enemyX[i] = random.randint(0,735)
             enemyY[i] = random.randint(50,150)
 
@@ -133,4 +145,5 @@ while running:
 
 
     player(playerX,playerY)
+    show_points(textX,textY)
     pygame.display.update()
