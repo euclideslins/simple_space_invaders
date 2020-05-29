@@ -4,7 +4,6 @@
   
     if you are running on a linux device: sudo apt install python-pip
     
-    
     - sudo pip install pygame
     - python3 main.py
     
