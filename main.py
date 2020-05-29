@@ -11,11 +11,19 @@ background = pygame.image.load("assets/background.jpg")
 pygame.display.set_caption('Space Invaders')
 
 
-enemyImg = pygame.image.load("assets/alien.png")
-enemyX = random.randint(0,735)
-enemyY = random.randint(50,150)
-enemyX_change=2
-enemyY_change=40
+enemyImg = []
+enemyX = []
+enemyY = []
+enemyX_change = []
+enemyY_change = []
+number_of_enemys = 6
+
+for i in range(number_of_enemys):
+    enemyImg.append( pygame.image.load("assets/alien.png"))
+    enemyX.append(random.randint(0,735))
+    enemyY.append(random.randint(50,150))
+    enemyX_change.append(2)
+    enemyY_change.append(40)
 
 
 playerImg = pygame.image.load("assets/player64.png")
@@ -40,8 +48,8 @@ bullet_state = "ready"
 ##Function of each 'object'
 def player(x,y):
     screen.blit(playerImg, (x,y))
-def enemy(x,y):
-    screen.blit(enemyImg, (x,y))
+def enemy(x,y,i):
+    screen.blit(enemyImg[i], (x,y))
 def bullet(x,y):
     global bullet_state
     bullet_state = "fire"
@@ -89,14 +97,30 @@ while running:
     elif(playerX >= 736):
         playerX = 736
 
+    for i in range(number_of_enemys):
+        
+        enemyX[i] += enemyX_change[i]
+        if(enemyX[i] <= 0):
+            enemyX_change[i]= 2
+            enemyY[i] += enemyY_change[i]
+        elif(enemyX[i] >= 736):
+            enemyX_change[i] = -2
+            enemyY[i] += enemyY_change[i]
+        
+        collision = collider(enemyX[i],bulletX, enemyY[i], bulletY)
+        if collision:
+            bulletY = 480
+            bullet_state = "ready"
+            score += 1
+            print(score)
+            enemyX[i] = random.randint(0,735)
+            enemyY[i] = random.randint(50,150)
 
-    enemyX += enemyX_change
-    if(enemyX <= 0):
-        enemyX_change= 2
-        enemyY += enemyY_change
-    elif(enemyX >= 736):
-        enemyX_change = -2
-        enemyY += enemyY_change
+
+        enemy(enemyX[i],enemyY[i],i)
+
+
+
 
 
     if(bulletY <= 0):
@@ -107,16 +131,6 @@ while running:
         bulletY -= bulletY_change
 
 
-    collision = collider(enemyX,bulletX, enemyY, bulletY)
-    if collision:
-        bulletY = 480
-        bullet_state = "ready"
-        score += 1
-        print(score)
-        enemyX = random.randint(0,735)
-        enemyY = random.randint(50,150)
 
     player(playerX,playerY)
-    enemy(enemyX,enemyY)
-
     pygame.display.update()
