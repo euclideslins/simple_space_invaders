@@ -51,6 +51,8 @@ bulletY_change=10
 bullet_state = "ready"
 
 font = pygame.font.Font("freesansbold.ttf",32)
+end_font = pygame.font.Font("freesansbold.ttf",64)
+
 textY = 10
 textX = 10
 
@@ -69,6 +71,10 @@ def bullet(x,y):
     bullet_state = "fire"
     screen.blit(bulletImg, (x+16, y+10))
 
+def game_over():
+    text = end_font.render("GAME OVER" , True, (255,127,10))
+    screen.blit(text, (200,250))
+    pygame.mixer.quit()
 ##Collider function
 
 def collider(enemyX, bulletX, enemyY, bulletY):
@@ -112,6 +118,13 @@ while running:
         playerX = 736
 
     for i in range(number_of_enemys):
+
+        if enemyY[i] > 200:
+            for j in range(number_of_enemys):
+                enemyY[j] = 2000
+            game_over()
+            break
+
         enemyX[i] += enemyX_change[i]
         if(enemyX[i] <= 0):
             enemyX_change[i]= 2
