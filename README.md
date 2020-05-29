@@ -1,5 +1,6 @@
 #How to run :
   
+  (Only for study purposes)
   You must have python installed in your computer, if you do not have it, install it through this link https://www.python.org/
   
     if you are running on a linux device: sudo apt install python-pip
